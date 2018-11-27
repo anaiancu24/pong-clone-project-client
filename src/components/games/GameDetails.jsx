@@ -43,7 +43,7 @@ class GameDetails extends PureComponent {
     if (game === null || users === null) return 'Loading...'
     if (!game) return 'Not found'
 
-    const player = game.players.find(p => p.userId2 === userId)
+    const player = game.players.find(p => p.userId === userId)
 
     const winner = game.players
       .filter(p => p.symbol === game.winner)
@@ -62,7 +62,7 @@ class GameDetails extends PureComponent {
 
       {
         game.status === 'pending' &&
-        game.players.map(p => p.userId2).indexOf(userId) === -1 &&
+        game.players.map(p => p.userId).indexOf(userId) === -1 &&
         <button onClick={this.joinGame}>Join Game</button>
       }
 
