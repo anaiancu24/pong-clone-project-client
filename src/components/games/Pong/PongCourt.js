@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react";
 import { Group, Rect } from "react-konva";
 
-export const WIDTH = 800;
-export const HEIGHT = 600;
+export const WIDTH = 1100;
+export const HEIGHT = 800;
 
 export default class Court extends PureComponent {
   render() {
@@ -13,7 +13,7 @@ export default class Court extends PureComponent {
           y={0}
           width={WIDTH}
           height={HEIGHT}
-          fill="rgb(0,0,0)"
+          fill="#333"
           shadowBlur={2}
         />
         <Rect
@@ -21,7 +21,7 @@ export default class Court extends PureComponent {
           y={2}
           width={WIDTH - 4}
           height={HEIGHT - 4}
-          fill="rgb(255,255,255)"
+          fill="#333"
         />
       </Group>
     );

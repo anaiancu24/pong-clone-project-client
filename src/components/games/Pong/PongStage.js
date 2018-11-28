@@ -5,7 +5,8 @@ import { Stage } from "react-konva";
 const width = 1100
 const height = 800
 
-export default class App extends Component {
+export default class Pong extends Component {
+
   render() {
     return (
       <Stage
@@ -13,7 +14,7 @@ export default class App extends Component {
         width={width}
         height={height}
       >
-        <Game />
+        <Game gameId={this.props.gameId} />
       </Stage>
     );
   }

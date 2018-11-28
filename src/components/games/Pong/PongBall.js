@@ -59,7 +59,7 @@ export default class Ball extends PureComponent {
       });
     }
 
-    this.animationTimeout = setTimeout(this.animate, 50);
+    this.animationTimeout = setTimeout(this.animate, 100);
   };
 
   render() {
@@ -72,9 +72,8 @@ export default class Ball extends PureComponent {
         }}
         x={x}
         y={y}
-        radius={10}
-        fill={color}
-        shadowBlur={1}
+        radius={6}
+        fill='#fff'
       />
     );
   }
