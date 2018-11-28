@@ -25,9 +25,9 @@ class GamesList extends PureComponent {
         <Typography color="textSecondary">
           This game is played by&nbsp;
           {
-            game.players
+            /* game.players
               .map(player => users[player.userId].firstName)
-              .join(' and ')
+              .join(' and ') */
           }
         </Typography>
         <Typography variant="headline" component="h2">
