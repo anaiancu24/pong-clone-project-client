@@ -6,6 +6,7 @@ import {getUsers} from '../../actions/users'
 import {userId} from '../../jwt'
 import Paper from 'material-ui/Paper'
 import './GameDetails.css'
+import Pong from './Pong'
 
 class GameDetails extends PureComponent {
 
@@ -55,10 +56,8 @@ class GameDetails extends PureComponent {
 
       {
         game.status === 'started' &&
-        player && player.symbol === game.turn &&
-        <div>It's your turn!</div>
+        <Pong />
       }
-
       {
         game.status === 'pending' &&
         game.players.map(p => p.userId).indexOf(userId) === -1 &&
