@@ -58,7 +58,6 @@ class GameDetails extends PureComponent {
         game.status === 'started' &&
         <Pong />
       }
-
       {
         game.status === 'pending' &&
         game.players.map(p => p.userId).indexOf(userId) === -1 &&
