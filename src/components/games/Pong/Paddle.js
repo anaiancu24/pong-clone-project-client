@@ -9,47 +9,49 @@ const paddleWidth = 100;
 
 class Paddles extends PureComponent {
   componentDidMount() {
-    window.addEventListener('keypress', (e) => {
+    window.addEventListener('keydown', (e) => {
       this.props.updateGame(this.props.game.id, this.paddleControl(e));
     })
   }
 
   paddleControl = (event) => {
-    console.log("hey i am being fired")
     const paddleSpeed = 10
     const player = this.props.game.players.find(p => p.userId === this.props.userId)
     const paddle1Y = this.props.coordinates.paddle1Y
     const paddle2Y = this.props.coordinates.paddle2Y
+    console.log(player)
+    let update = {}
 
     if (player.symbol === '1') {
-      if (event.key == 'w' && (paddle1Y + 100) < 1100) {
+      if (event.key === 'w' && paddle1Y > 0) {
         console.log('w pressed 1')
-        return {
+        update = {
           type: 'UPDATE_PADDLE_1',
           position: paddle1Y - paddleSpeed,
         }
-      } else if (event.key === 's' && paddle1Y > 0) {
+      } else if (event.key === 's' && (paddle1Y + 100) < 800) {
         console.log('s pressed 1')
-        return {
+        update = {
           type: 'UPDATE_PADDLE_1',
           position: paddle1Y + paddleSpeed,
         }
       }
     } else if (player.symbol === '2') {
-      if (event.key === 'w' && (paddle2Y + 100) < 1100) {
+      if (event.key === 'w' && paddle2Y > 0) {
         console.log('w pressed 2')
-        return {
+        update = {
           type: 'UPDATE_PADDLE_2',
           position: paddle2Y - paddleSpeed,
         }
-      } else if (event.key === 's' && paddle2Y > 0) {
+      } else if (event.key === 's' && (paddle2Y + 100) < 800) {
         console.log('s pressed 2')
-        return {
+        update = {
           type: 'UPDATE_PADDLE_2',
           position: paddle2Y + paddleSpeed,
         }
       }
     }
+    return update
   }
 
   render() {
