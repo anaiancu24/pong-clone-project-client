@@ -14,6 +14,12 @@ class Paddles extends PureComponent {
     })
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('keydown', (e) => {
+      this.props.updateGame(this.props.game.id, this.paddleControl(e));
+    })
+  }
+
   paddleControl = (event) => {
     const paddleSpeed = 10
     const player = this.props.game.players.find(p => p.userId === this.props.userId)
