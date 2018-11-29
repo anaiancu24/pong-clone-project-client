@@ -22,18 +22,6 @@ export default (state = null, {type, payload}) => {
         [payload.id]: payload
       }
 
-    case UPDATE_PADDLES:
-      return {
-        ...state,
-        [payload.id]: {
-          ...state[payload.id],
-          coordinates: {
-            ...state[payload.id].coordinates,
-            paddle1Y: payload.position
-          }
-        }
-      }
-
     case UPDATE_GAMES:
       return payload.reduce((games, game) => {
         games[game.id] = game

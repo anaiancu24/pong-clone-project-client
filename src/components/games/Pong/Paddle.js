@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { connect } from 'react-redux'
 import { Group, Rect } from "react-konva";
 import { userId } from '../../../jwt';
-import { updatePaddlePosition } from "../../../actions/games";
+import { updateGame } from "../../../actions/games";
 
 const WIDTH = 1100;
 const paddleWidth = 100;
@@ -10,7 +10,7 @@ const paddleWidth = 100;
 class Paddles extends PureComponent {
   componentDidMount() {
     window.addEventListener('keypress', (e) => {
-      this.props.updatePaddlePosition(this.paddleControl(e));
+      this.props.updateGame(this.props.game.id, this.paddleControl(e));
     })
   }
 
@@ -27,14 +27,12 @@ class Paddles extends PureComponent {
         return {
           type: 'UPDATE_PADDLE_1',
           position: paddle1Y - paddleSpeed,
-          id: this.props.game.id
         }
       } else if (event.key === 's' && paddle1Y > 0) {
         console.log('s pressed 1')
         return {
           type: 'UPDATE_PADDLE_1',
           position: paddle1Y + paddleSpeed,
-          id: this.props.game.id
         }
       }
     } else if (player.symbol === '2') {
@@ -43,14 +41,12 @@ class Paddles extends PureComponent {
         return {
           type: 'UPDATE_PADDLE_2',
           position: paddle2Y - paddleSpeed,
-          id: this.props.game.id
         }
       } else if (event.key === 's' && paddle2Y > 0) {
         console.log('s pressed 2')
         return {
           type: 'UPDATE_PADDLE_2',
           position: paddle2Y + paddleSpeed,
-          id: this.props.game.id
         }
       }
     }
@@ -85,4 +81,4 @@ const mapStateToProps = (state, props) => ({
   userId: state.currentUser && userId(state.currentUser.jwt),
 })
 
-export default connect(mapStateToProps, { updatePaddlePosition })(Paddles)
+export default connect(mapStateToProps, { updateGame })(Paddles)

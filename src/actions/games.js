@@ -28,16 +28,6 @@ const joinGameSuccess = () => ({
   type: JOIN_GAME_SUCCESS
 })
 
-const updateGamePaddlesSuccess = (payload) => ({
-  type: UPDATE_PADDLES,
-  payload
-})
-
-export const updatePaddlePosition = (update) => (dispatch, getState) => {
-  console.log('fire')
-  dispatch(updateGamePaddlesSuccess(update))
-}
-
 export const getGames = () => (dispatch, getState) => {
   const state = getState()
   if (!state.currentUser) return null
@@ -78,16 +68,18 @@ export const createGame = () => (dispatch, getState) => {
     .catch(err => console.error(err))
 }
 
-export const updateGame = (gameId, board) => (dispatch, getState) => {
+export const updateGame = (gameId, update) => (dispatch, getState) => {
   const state = getState()
   const jwt = state.currentUser.jwt
 
   if (isExpired(jwt)) return dispatch(logout())
 
-  request
+  console.log("Send", gameId, update)
+
+  /* request
     .patch(`${baseUrl}/games/${gameId}`)
     .set('Authorization', `Bearer ${jwt}`)
-    .send({ board })
+    .send(update)
     .then(_ => dispatch(updateGameSuccess()))
-    .catch(err => console.error(err))
+    .catch(err => console.error(err)) */
 }
