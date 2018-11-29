@@ -9,7 +9,7 @@ export default class Game extends Component {
     return (
       <Layer>
         <Court />
-        <Ball />
+        <Ball gameId={this.props.gameId}/>
         <Paddles gameId={this.props.gameId}/>
       </Layer>
     );
