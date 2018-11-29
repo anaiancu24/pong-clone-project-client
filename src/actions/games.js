@@ -8,6 +8,7 @@ export const UPDATE_GAME = 'UPDATE_GAME'
 export const UPDATE_GAMES = 'UPDATE_GAMES'
 export const JOIN_GAME_SUCCESS = 'JOIN_GAME_SUCCESS'
 export const UPDATE_GAME_SUCCESS = 'UPDATE_GAME_SUCCESS'
+export const UPDATE_PADDLES = 'UPDATE_PADDLES'
 
 const updateGames = games => ({
   type: UPDATE_GAMES,
@@ -27,6 +28,15 @@ const joinGameSuccess = () => ({
   type: JOIN_GAME_SUCCESS
 })
 
+const updateGamePaddlesSuccess = (payload) => ({
+  type: UPDATE_PADDLES,
+  payload
+})
+
+export const updatePaddlePosition = (update) => (dispatch, getState) => {
+  console.log('fire')
+  dispatch(updateGamePaddlesSuccess(update))
+}
 
 export const getGames = () => (dispatch, getState) => {
   const state = getState()
