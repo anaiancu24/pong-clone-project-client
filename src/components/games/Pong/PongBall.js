@@ -33,7 +33,9 @@ class Ball extends PureComponent {
     let newDeltaX = deltaX;
     let newDeltaY = deltaY;
 
-    console.log(newX, newY, newDeltaX, newDeltaY)
+    if (this.props.game.winner !== "null") {
+      return { x: WIDTH / 2, y: HEIGHT / 2, deltaX: 0, deltaY: 0 }
+    }
 
     if (newX > WIDTH || newX < 0) {
       return this.collision(newX, newY, newDeltaX)
@@ -49,12 +51,13 @@ class Ball extends PureComponent {
   };
 
   collision = (x, y, deltaX, deltaY) => {
-    console.log('being called')
     const paddle1Top = this.props.coordinates.paddle1Y
     const paddle1Bottom = this.props.coordinates.paddle1Y + 100
 
     const paddle2Top = this.props.coordinates.paddle2Y
     const paddle2Bottom = this.props.coordinates.paddle2Y + 100
+
+    const player = this.props.game.players.find(p => p.userId === this.props.userId)
 
     let newDeltaX
     let newDeltaY
@@ -73,6 +76,7 @@ class Ball extends PureComponent {
       newDeltaY = modY * 0.35;
       result = { x: x, y: y, deltaX: newDeltaX, deltaY: newDeltaY }
     } else {
+
       result = { x: WIDTH / 2, y: HEIGHT / 2, deltaX: -deltaX, deltaY: 0 }
 
       if (x < WIDTH / 2) {
@@ -88,15 +92,9 @@ class Ball extends PureComponent {
         }
         this.props.updateGame(this.props.gameId, update)
       }
-      
     }
     console.log(result)
     return result
-
-  }
-
-  reset = () => {
-    return
   }
 
   animate = () => {
@@ -139,6 +137,7 @@ class Ball extends PureComponent {
     clearTimeout(this.animationTimeout);
   }
 }
+
 
 const mapStateToProps = (state, props) => ({
   coordinates: state.games && state.games[props.gameId].coordinates,

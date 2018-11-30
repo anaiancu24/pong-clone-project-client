@@ -7,6 +7,7 @@ import { userId } from '../../jwt'
 import Paper from 'material-ui/Paper'
 import './GameDetails.css'
 import Pong from './Pong/PongStage'
+import Popup from 'react-popup'
 
 class GameDetails extends PureComponent {
 
@@ -52,7 +53,7 @@ class GameDetails extends PureComponent {
 
         {
           winner &&
-          <p>Winner: {users[winner].firstName}</p>
+          Popup.alert(`hez`)
         }
 
         <hr />

@@ -16,13 +16,6 @@ export default class Court extends PureComponent {
           fill="#333"
           shadowBlur={2}
         />
-        <Rect
-          x={2}
-          y={2}
-          width={WIDTH - 4}
-          height={HEIGHT - 4}
-          fill="#333"
-        />
       </Group>
     );
   }
