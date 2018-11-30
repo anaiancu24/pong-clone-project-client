@@ -2,6 +2,9 @@ import React, { PureComponent } from "react";
 import Konva from "konva";
 import { Circle } from "react-konva";
 import { WIDTH, HEIGHT } from "./PongCourt";
+import { connect } from 'react-redux'
+import { updateGame } from '../../../actions/games'
+import { userId } from '../../../jwt'
 
 const MIN_X = 12,
   MIN_Y = 12,
@@ -9,52 +12,105 @@ const MIN_X = 12,
   MAX_Y = HEIGHT - MIN_Y,
   SPEED = 30;
 
-export default class Ball extends PureComponent {
+class Ball extends PureComponent {
   state = {
     color: Konva.Util.getRandomColor(),
-    x: MIN_X,
-    y: MIN_Y,
+    x: WIDTH / 2,
+    y: HEIGHT / 2,
     direction: { x: 0, y: 0 }
   };
 
   componentDidMount() {
-    const x = Math.floor(Math.random() * SPEED);
-    const y = SPEED - x;
+    const x = 20;
+    const y = 0;
     this.setState({ direction: { x, y } });
     this.animate();
   }
 
-  newCoord = (val, delta, max, min) => {
-    let newVal = val + delta;
-    let newDelta = delta;
+  newCoord = (x, deltaX, y, deltaY) => {
+    let newX = x + deltaX;
+    let newY = y + deltaY;
+    let newDeltaX = deltaX;
+    let newDeltaY = deltaY;
 
-    if (newVal > max || newVal < min) {
-      newDelta = -delta;
+    console.log(newX, newY, newDeltaX, newDeltaY)
+
+    if (newX > WIDTH || newX < 0) {
+      return this.collision(newX, newY, newDeltaX)
     }
 
-    if (newVal < min) {
-      newVal = min - newVal;
-    }
-    if (newVal > max) {
-      newVal = newVal - (newVal - max);
+    if ((newY > HEIGHT || newY < 0) && (newX !== WIDTH || newX !== 0)) {
+      newDeltaY = -deltaY
+      return { x: newX, y: newY, deltaX: newDeltaX, deltaY: newDeltaY }
     }
 
-    return { val: newVal, delta: newDelta };
+    return { x: newX, y: newY, deltaX: newDeltaX, deltaY: newDeltaY }
+
   };
+
+  collision = (x, y, deltaX, deltaY) => {
+    console.log('being called')
+    const paddle1Top = this.props.coordinates.paddle1Y
+    const paddle1Bottom = this.props.coordinates.paddle1Y + 100
+
+    const paddle2Top = this.props.coordinates.paddle2Y
+    const paddle2Bottom = this.props.coordinates.paddle2Y + 100
+
+    let newDeltaX
+    let newDeltaY
+    let modY
+
+    let result = { x: x, y: y, deltaX: deltaX, deltaY: deltaY }
+
+    if (x > WIDTH / 2 && (y >= paddle2Top && y <= paddle2Bottom)) {
+      newDeltaX = -deltaX
+      modY = y - (paddle2Top + 100 / 2)
+      newDeltaY = modY * 0.35;
+      result = { x: x, y: y, deltaX: newDeltaX, deltaY: newDeltaY }
+    } else if (x < WIDTH / 2 && (y >= paddle1Top && y <= paddle1Bottom)) {
+      newDeltaX = -deltaX
+      modY = y - (paddle1Top + 100 / 2)
+      newDeltaY = modY * 0.35;
+      result = { x: x, y: y, deltaX: newDeltaX, deltaY: newDeltaY }
+    } else {
+      result = { x: WIDTH / 2, y: HEIGHT / 2, deltaX: -deltaX, deltaY: 0 }
+
+      if (x < WIDTH / 2) {
+        const update = {
+          type: "SCORE_PLAYER2",
+          newScore: this.props.game.players[1].score + 1
+        }
+        this.props.updateGame(this.props.gameId, update)
+      } else {
+        const update = {
+          type: "SCORE_PLAYER1",
+          newScore: this.props.game.players[0].score + 1
+        }
+        this.props.updateGame(this.props.gameId, update)
+      }
+      
+    }
+    console.log(result)
+    return result
+
+  }
+
+  reset = () => {
+    return
+  }
 
   animate = () => {
     const { direction, x, y } = this.state;
 
     if (direction.x !== 0 || direction.y !== 0) {
-      const newX = this.newCoord(x, direction.x, MAX_X, MIN_X);
-      const newY = this.newCoord(y, direction.y, MAX_Y, MIN_Y);
+      const newC = this.newCoord(x, direction.x, y, direction.y);
 
       this.setState({
-        x: newX.val,
-        y: newY.val,
+        x: newC.x,
+        y: newC.y,
         direction: {
-          x: newX.delta,
-          y: newY.delta
+          x: newC.deltaX,
+          y: newC.deltaY
         }
       });
     }
@@ -84,15 +140,19 @@ export default class Ball extends PureComponent {
   }
 }
 
+const mapStateToProps = (state, props) => ({
+  coordinates: state.games && state.games[props.gameId].coordinates,
+  game: state.games && state.games[props.gameId],
+  userId: state.currentUser && userId(state.currentUser.jwt),
+})
+
+export default connect(mapStateToProps, { updateGame })(Ball)
 
 
 
 
 
-  
 
-  
 
-  
 
-  
+

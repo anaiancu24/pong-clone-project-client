@@ -30,13 +30,11 @@ class Paddles extends PureComponent {
 
     if (player.symbol === '1') {
       if (event.key === 'w' && paddle1Y > 0) {
-        console.log('w pressed 1')
         update = {
           type: 'UPDATE_PADDLE_1',
           position: paddle1Y - paddleSpeed,
         }
       } else if (event.key === 's' && (paddle1Y + 100) < 800) {
-        console.log('s pressed 1')
         update = {
           type: 'UPDATE_PADDLE_1',
           position: paddle1Y + paddleSpeed,
@@ -44,13 +42,11 @@ class Paddles extends PureComponent {
       }
     } else if (player.symbol === '2') {
       if (event.key === 'w' && paddle2Y > 0) {
-        console.log('w pressed 2')
         update = {
           type: 'UPDATE_PADDLE_2',
           position: paddle2Y - paddleSpeed,
         }
       } else if (event.key === 's' && (paddle2Y + 100) < 800) {
-        console.log('s pressed 2')
         update = {
           type: 'UPDATE_PADDLE_2',
           position: paddle2Y + paddleSpeed,
