@@ -1,3 +1,3 @@
-export const baseUrl = 'https://calm-ridge-79553.herokuapp.com'
+export const baseUrl = 'http://172.16.29.114:4000'
 
 export const localStorageJwtKey = 'currentUserJwt'
